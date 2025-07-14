@@ -1,10 +1,17 @@
-// src/pages/Home.jsx
-function Home() {
-  return (
-    <div>
-      <h1>Welcome to Vinaria 🎵</h1>
-    </div>
-  )
-}
+import React from "react";
+import HeroSection from "../components/HeroSection";
+import ChartSection from "../components/ChartSection";
+import RecommendSection from "../components/RecommendSection";
+import MainLayout from "../layouts/MainLayout";
 
-export default Home
+const Home = () => {
+  return (
+    <MainLayout>
+      <HeroSection />
+      <ChartSection />
+      <RecommendSection />
+    </MainLayout>
+  );
+};
+
+export default Home;

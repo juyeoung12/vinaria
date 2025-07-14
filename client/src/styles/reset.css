@@ -4,9 +4,9 @@
 *,
 *::before,
 *::after {
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 /* 기본 html, body 설정 */
@@ -14,8 +14,8 @@ html, body {
   height: 100%;
   font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   line-height: 1.5;
-  background-color: #fff;
-  color: #222;
+  background-color: #2D2D2D;
+  color: #fff; 
 }
 
 /* 이미지 크기 초기화 */
