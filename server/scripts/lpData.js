@@ -6,7 +6,7 @@ const lpData = {
   genre: '인디',
   releaseDate: '2025-06-01',
   edition: '한정판',
-  thumbnail: '/public/home1.jpg',
+  thumbnail: '/images/home1.jp',
   audioUrl: '/audios/rose.mp3',
   duration: '4분 14초',
   playCount: 4500,
@@ -15,6 +15,7 @@ const lpData = {
   shippingInfo: '기본 2500원 (제주/도서 산간 추가)',
   rank_audio: 1,
   rank_sale: 1,
+  showInChart: true,
 
   // 트랙 리스트
   tracks: [

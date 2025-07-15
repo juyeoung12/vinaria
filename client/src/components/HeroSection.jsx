@@ -8,25 +8,25 @@ const banners = [
     genre: "groove",
     label: "The LP Room – July Edition",
     desc: "“지금 가장 많이 회자되고 있는 사운드”",
-    image: "/images/main1.jpg",
+    image: "/images/home1.jpg",
   },
   {
     genre: "soul",
     label: "Groove & Soul Vibes",
     desc: "“느릿한 그루브, 따뜻하게 흐르는 감성”",
-    image: "/images/main1.jpg",
+    image: "/images/home1.jpg",
   },
   {
     genre: "jazz",
     label: "Jazz Essentials",
     desc: "“느릿한 그루브, 따뜻하게 흐르는 감성”",
-    image: "/images/main1.jpg",
+    image: "/images/home1.jpg",
   },
   {
     genre: "pop",
     label: "Modern Pop Wave",
     desc: "“느릿한 그루브, 따뜻하게 흐르는 감성”",
-    image: "/images/main1.jpg",
+    image: "/images/home1.jpg",
   },
 ];
 
@@ -37,6 +37,7 @@ const Section = styled.section`
   display: flex;
   justify-content: center;
   align-items: center;
+  background: #2d2d2d;
 `;
 
 const Container = styled.div`
