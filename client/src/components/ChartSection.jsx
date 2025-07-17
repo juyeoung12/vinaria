@@ -1,32 +1,26 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import Slider from "react-slick";
-import styled from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
+import { useNavigate } from "react-router-dom"; // ✅ 추가
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
   .slick-slide {
-    margin-right: 5px;
-    min-width: 250px !important; /* 카드 크기 강제 */
-  }
-
-  .slick-list {
-    margin-right: -5px;
-    overflow: hidden; /* 🔒 줄바꿈 방지 */
+    padding: 0 !important;
+    margin-right: 0px !important;
   }
 
   .slick-track {
+    gap: 8px !important;
     display: flex !important;
-    flex-wrap: nowrap !important;
   }
 `;
 
-// 🔽 커스텀 화살표 상단 배치용 Wrapper
 const SliderControls = styled.div`
   position: absolute;
-  top: -34px;          // 🔼 위로 빠지지 않도록 양수로 변경
+  top: -34px;
   right: 0;
   display: flex;
   gap: 12px;
@@ -42,23 +36,22 @@ const ArrowWrapper = styled.div`
   }
 `;
 
-// 🔽 기본 스타일
 const Outer = styled.div`
   width: 100%;
   background-color: #222;
   display: flex;
   justify-content: center;
+  height: 90vh;
 `;
 
 const Section = styled.section`
   width: 100%;
   max-width: 1440px;
-  padding: 40px 0;              // 🔽 기존보다 패딩 줄이기
+  padding: 40px 0;
   background-color: #222;
   display: flex;
   justify-content: center;
-  height: auto;                 // 🔽 고정 height 제거 (또는 더 작게 설정)
-  min-height: 750px;    
+  height: 100%;
 `;
 
 const Container = styled.div`
@@ -69,22 +62,23 @@ const Container = styled.div`
   align-items: center;
   overflow: visible;
   height: 100%;
-  justify-content: center;
+  padding: 80px 0 0 0;
+  box-sizing: border-box;
 `;
 
 const Title = styled.h2`
-  font-size: 35px;
+  font-size: 45px;
   font-weight: bold;
   margin-bottom: 4px;
   span {
     color: #e4cfa1;
     margin-left: 6px;
-    font-size: 25px;
+    font-size: 35px;
   }
 `;
 
 const Subtitle = styled.p`
-  font-size: 15px;
+  font-size: 20px;
   color: #aaa;
   margin-bottom: 40px;
 `;
@@ -92,7 +86,7 @@ const Subtitle = styled.p`
 const TabWrapper = styled.div`
   display: flex;
   gap: 30px;
-  margin-bottom: 40px;
+  margin: 40px 0;
   position: relative;
   align-items: center;
 `;
@@ -123,13 +117,14 @@ const Card = styled.div`
   padding: 33px 12px;
   width: 280px;
   position: relative;
-  background: #222222;  // ✅ 기본 배경 고정
+  background: #222222;
   height: ${(props) => (props.tab === "music" ? "250px" : "290px")};
   transition: background-color 0.3s;
   text-align: left;
+  cursor: pointer; /* ✅ 클릭 가능한 느낌 추가 */
 
   &:hover {
-    background: #303030;  // ✅ 호버 시 배경 통일
+    background: #303030;
 
     .play-icon {
       opacity: 1;
@@ -144,7 +139,6 @@ const Card = styled.div`
     align-items: center;
     height: 150px;
     margin-bottom: 10px;
-    
   }
 
   img {
@@ -158,8 +152,8 @@ const Card = styled.div`
     position: absolute;
     bottom: -10px;
     right: 31px;
-    width: 42px;
-    height: 42px;
+    width: 47px;
+    height: 47px;
     opacity: 0;
     transition: opacity 0.3s;
   }
@@ -200,25 +194,18 @@ const Card = styled.div`
   }
 `;
 
-
 const SliderWrapper = styled.div`
   width: 100%;
   position: relative;
   margin-top: 45px;
-  overflow: visible;  // ✅ 넘치는 카드 숨기기
+  overflow: visible;
 `;
-
 
 const CardWrapper = styled.div`
   width: 250px !important;
-  margin-right: 0px;
-
-  &:last-child {
-    margin-right: 0;
-  }
+  flex: 0 0 auto;
 `;
 
-// 🔽 데이터 반복 함수
 const repeatToFill = (arr, targetLength) => {
   if (arr.length === 0) return [];
   const result = [];
@@ -228,16 +215,15 @@ const repeatToFill = (arr, targetLength) => {
   return result.slice(0, targetLength);
 };
 
-// 🔽 컴포넌트 본문
 const ChartSection = () => {
   const [tab, setTab] = useState("music");
   const [lpData, setLpData] = useState([]);
   const sliderRef = useRef(null);
+  const navigate = useNavigate(); // ✅ navigate 훅 사용
 
   useEffect(() => {
     axios.get("http://localhost:5000/api/lps")
       .then((res) => {
-        console.log("원본 데이터:", res.data);
         setLpData(res.data);
       })
       .catch((err) => console.error("데이터 로딩 실패", err));
@@ -253,15 +239,14 @@ const ChartSection = () => {
 
   const filled = repeatToFill(sorted, 10);
 
-  // ✅ 슬라이드 설정: 소수 값으로 일부 카드만 보이게
   const sliderSettings = {
-  dots: false,
-  infinite: false,
-  speed: 500,
-  slidesToShow: 5,  // ✅ 카드 250px 기준 적절한 개수로 보이게
-  slidesToScroll: 1,
-  arrows: false,
-};
+    dots: false,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 5,
+    slidesToScroll: 1,
+    arrows: false,
+  };
 
   return (
     <Outer>
@@ -283,7 +268,7 @@ const ChartSection = () => {
             </Tab>
             <Divider>|</Divider>
             <Tab $active={tab === "purchase"} onClick={() => setTab("purchase")}>
-              구매
+              앨범
             </Tab>
           </TabWrapper>
 
@@ -303,7 +288,7 @@ const ChartSection = () => {
               <Slider ref={sliderRef} {...sliderSettings}>
                 {filled.map((item, index) => (
                   <CardWrapper key={`${item._id}-${index}`}>
-                    <Card tab={tab}>
+                    <Card tab={tab} onClick={() => navigate(`/lp/${item._id}`)}>
                       <div className="image-container">
                         <img src={item.thumbnail} alt={item.title} />
                         <img src="/icons/play.svg" alt="play" className="play-icon" />
@@ -316,7 +301,6 @@ const ChartSection = () => {
                       )}
                     </Card>
                   </CardWrapper>
-
                 ))}
               </Slider>
             </SliderWrapper>

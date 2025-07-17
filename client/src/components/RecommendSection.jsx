@@ -5,15 +5,15 @@ import { ArrowRight } from "lucide-react";
 
 const Section = styled.section`
   color: white;
-  padding: 6rem;
+  height: 100vh; /* ✅ 뷰포트 높이 전체 */
+  padding: 0;
   position: relative;
   overflow: hidden;
-  height: 800px;
   background-image: url("/images/home3.jpg");
-  object-fit: cover;
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
+  scroll-snap-align: start;
 `;
 
 const Content = styled.div`
@@ -24,59 +24,53 @@ const Content = styled.div`
   width: 100%;
   justify-content: center;
   align-items: center;
+  padding: 6rem; /* ✅ 여백 여기서 */
   gap: 150px;
+  box-sizing: border-box;
 `;
 
 const Title = styled.h2`
-  font-size: 50px;
+  font-size: 60px;
   font-weight: 600;
-  margin-bottom: 0.75rem;
+  margin: 0;
   color: #E4CFA1;
   line-height: 1.2;
 `;
 
 const Description = styled.p`
-  font-size: 18px;
+  font-size: 22px;
   color: #E2E2E2;
   line-height: 1.6;
   margin: 0;
-`;
-
-const Flex = styled.div`
-  display: flex;
-  gap: 65px;
-  flex-direction: column;
 `;
 
 const CardButton = styled.button`
   display: flex;
   justify-content: space-around;
   align-items: center;
-  padding: 1.25rem 2rem;
-  border: 3px solid #E2E2E2;
+  padding: 0px 65px;
+  border: 3px solid #ffffff;
   background: #22222294;
   color: white;
   font-size: 22px;
   font-weight: 500;
-  text-align: left;
   cursor: pointer;
-  transition: none;
-  width: 540px;
-  height: 221px;
-  gap: 1rem;
+  width: 1100PX;
+  height: 550PX;
+  margin-top: 30px;
 
-  // 기본 호버 효과 제거
   &:hover {
     background: #22222294;
     color: #ffffff;
   }
 
-  // 화살표에만 호버 효과 적용
-  svg {
+  img {
+    width: 130px;
+    height: 85px;
     transition: transform 0.3s ease;
   }
 
-  &:hover svg {
+  &:hover img {
     transform: translateX(10px);
   }
 `;
@@ -88,55 +82,26 @@ const RecommendSection = () => {
   return (
     <Section>
       <Content>
-        <div style={{display: 'flex', flexDirection: 'column', gap: '33px'}}>
-          <Title>
-            Vinaria<br/>
-            RECOMMENDS
-          </Title>
-          <Description>
-            지금 나만의 LP를 고르러 가볼까요?<br/>
-            Vinaria의 리스트에서 직접 골라보세요
-          </Description>
-        </div>
-
-        <Flex>
-          <CardButton onClick={() => navigate("/marketplace")}>
-            <span>들을 LP 음원을<br/>
-            찾고 있다면?</span>
-            <svg
-              width="59"
-              height="42"
-              viewBox="0 0 59 42"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+          <CardButton onClick={() => navigate("/list")}>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '45px',
+                textAlign: 'left'
+              }}
             >
-              <path
-                d="M2 21.6977H56M56 21.6977L41.2442 3M56 21.6977L41.2442 39"
-                stroke="white"
-                strokeWidth="4"
-                strokeLinecap="square"
-              />
-            </svg>
+              <Title>
+                Vinaria<br />
+                RECOMMENDS
+              </Title>
+              <Description>
+                지금 나만의 LP를 고르러 가볼까요?<br />
+                <b>Vinaria</b>의 리스트에서 직접 골라보세요
+              </Description>
+            </div>
+            <img src="/arrow.png" alt="arrow" className="arrow-icon" />
           </CardButton>
-          <CardButton onClick={() => navigate("/marketplace")}>
-            <span>소장할 LP를<br/>
-               찾고 있다면?</span>
-            <svg
-              width="59"
-              height="42"
-              viewBox="0 0 59 42"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M2 21.6977H56M56 21.6977L41.2442 3M56 21.6977L41.2442 39"
-                stroke="white"
-                strokeWidth="4"
-                strokeLinecap="square"
-              />
-            </svg>
-          </CardButton>
-        </Flex>
       </Content>
     </Section>
   );

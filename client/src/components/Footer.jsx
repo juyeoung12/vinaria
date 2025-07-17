@@ -12,11 +12,13 @@ const Container = styled.div`
 
   margin: 0 auto;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   font-size: 0.875rem;
-  color: #e2e2e2; /* text-gray-400 */
+  color: #e2e2e2;
   height: 100%;
+  max-width: 1440px;
+  width: 100%;
 `;
 
 const ContactInfo = styled.div`
@@ -74,8 +76,8 @@ const Footer = () => {
 
         {/* 우측 저작권 */}
         <Copyright>
-          <p style={{margin: '0'}}>© VINARIA, All Rights Reserved.</p>
-          <p style={{margin: '0'}}>Icons provided by Lucide, licensed under the MIT License.</p>
+          <p style={{margin: '0', fontSize: '16px'}}>© VINARIA, All Rights Reserved.</p>
+          <p style={{margin: '0', fontSize: '16px'}}>Icons provided by Lucide, licensed under the MIT License.</p>
         </Copyright>
       </Container>
     </FooterWrapper>

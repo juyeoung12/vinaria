@@ -33,7 +33,7 @@ const banners = [
 // 스타일 정의
 const Section = styled.section`
   width: 100%;
-  height: 900px;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -43,9 +43,10 @@ const Section = styled.section`
 const Container = styled.div`
   width: 100%;
   max-width: 1440px;
-  height: 650px;
+  height: 750px;
   display: flex;
   gap: 5px;
+  margin-bottom: 65px;
 `;
 
 const LargeBanner = styled.div`

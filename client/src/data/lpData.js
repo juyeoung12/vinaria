@@ -6,7 +6,7 @@ const lpData = {
   genre: '인디',
   releaseDate: '2025-06-01',
   edition: '한정판',
-  thumbnail: '/images/home1.jpg',
+  thumbnail: '/images/home1.jp',
   audioUrl: '/audios/rose.mp3',
   duration: '4분 14초',
   playCount: 4500,
