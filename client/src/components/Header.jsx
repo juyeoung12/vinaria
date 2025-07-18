@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { Search, ShoppingCart, LogIn } from "lucide-react";
+import { Search, ShoppingCart, LogIn, ShoppingBag } from "lucide-react";
+import { useAuthModal } from "../store/authModalContext";
+import { useAuth } from "../context/AuthContext";
 
-// ✅ 바깥 헤더 컨테이너 (배경용)
 const HeaderContainer = styled.div`
   width: 100%;
   background-color: #222222;
@@ -11,11 +12,10 @@ const HeaderContainer = styled.div`
   justify-content: center;
 `;
 
-// ✅ 내부 헤더 내용 (1440px 중앙 정렬)
 const HeaderWrapper = styled.header`
   width: 100%;
   max-width: 1440px;
-  height: 100px;
+  height: 90px;
   color: white;
   display: flex;
   justify-content: space-between;
@@ -24,8 +24,7 @@ const HeaderWrapper = styled.header`
   box-sizing: border-box;
 `;
 
-// 로고 링크
-const LogoLink = styled.a`
+const LogoLink = styled(Link)`
   display: flex;
   align-items: center;
 
@@ -34,11 +33,10 @@ const LogoLink = styled.a`
   }
 `;
 
-// 네비게이션 메뉴
 const Nav = styled.nav`
   display: flex;
   gap: 74px;
-  font-size: 19px;
+  font-size: 17px;
   font-weight: 500;
 
   a {
@@ -51,15 +49,14 @@ const Nav = styled.nav`
   }
 `;
 
-// 오른쪽 아이콘 영역
 const Icons = styled.div`
   display: flex;
   gap: 22px;
   align-items: center;
 
   svg {
-    width: 30px;
-    height: 30px;
+    width: 25px;
+    height: 25px;
     cursor: pointer;
     transition: color 0.2s;
 
@@ -67,30 +64,107 @@ const Icons = styled.div`
       color: #d1d5db;
     }
   }
+
+  position: relative;
+`;
+
+// 드롭다운 메뉴
+const Dropdown = styled.div`
+  position: absolute;
+  top: 38px;
+  right: 0;
+  background-color: #373737;
+  padding: 12px 20px;
+  width: 95px;
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  z-index: 10;
+
+  p {
+    margin: 3px 0 7px 0;
+    color: #E2E2E2;
+    font-size: 14px;
+  }
+
+  hr {
+    margin: 0;
+    border: 0.5px solid #303030;
+  }
+
+  a {
+    text-decoration: none;
+    color: #E2E2E2;
+    margin-bottom: 8px;
+    margin-top: 12px;
+    font-size: 15px;
+  }
+
+  .logout {
+    color: #e4cfa1;
+    cursor: pointer;
+
+  }
+`;
+
+const ProfileIcon = styled.img`
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  margin-top: 7px;
 `;
 
 const Header = () => {
+  const { openAuthModal } = useAuthModal();
+  const { user, setUser } = useAuth();
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  const toggleDropdown = () => setShowDropdown(!showDropdown);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setUser(null);
+    setShowDropdown(false);
+  };
+
   return (
     <HeaderContainer>
       <HeaderWrapper>
-        {/* 로고 */}
-        <LogoLink href="/">
+        <LogoLink to="/">
           <img src="/icons/Vinaria.svg" alt="Vinaria Logo" />
         </LogoLink>
 
-        {/* 네비게이션 */}
         <Nav>
           <Link to="/list">LP 음원/앨범</Link>
-          <a href="#">LP 업로드</a>
-          <a href="#">감상 패스</a>
-          <a href="#">내 LP 보관함</a>
+          <Link to="/subscribe">감상 패스</Link>
+          <Link to="/mypage">내 LP 보관함</Link>
         </Nav>
 
-        {/* 아이콘 */}
         <Icons>
           <Search />
-          <ShoppingCart />
-          <LogIn />
+          <ShoppingBag size={25} />
+
+          {user ? (
+            <div style={{ position: "relative" }}>
+              <ProfileIcon
+                src="/icons/user.svg"
+                alt="User"
+                onClick={toggleDropdown}
+              />
+              {showDropdown && (
+                <Dropdown>
+                  <p>{user.name}님</p>
+                  <hr />
+                  <Link to="/mypage">마이 페이지</Link>
+                  <p className="logout"  style={{ fontSize: "15px" }} onClick={handleLogout}>
+                    로그아웃
+                  </p>
+                </Dropdown>
+              )}
+            </div>
+          ) : (
+            <LogIn onClick={openAuthModal} />
+          )}
         </Icons>
       </HeaderWrapper>
     </HeaderContainer>

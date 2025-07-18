@@ -55,9 +55,8 @@ const CardButton = styled.button`
   font-size: 22px;
   font-weight: 500;
   cursor: pointer;
-  width: 1100PX;
-  height: 550PX;
-  margin-top: 30px;
+  width: 1000PX;
+  height: 500PX;
 
   &:hover {
     background: #22222294;
@@ -71,7 +70,7 @@ const CardButton = styled.button`
   }
 
   &:hover img {
-    transform: translateX(10px);
+    transform: translateX(25px);
   }
 `;
 

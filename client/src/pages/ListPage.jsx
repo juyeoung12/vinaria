@@ -5,12 +5,12 @@ import styled from "styled-components";
 
 // 전체 레이아웃
 const Wrapper = styled.div`
-  flex: 1; /* 메인 콘텐츠가 flex-grow */
+  flex: 1;
   display: flex;
   justify-content: center;
   background-color: #2d2d2d;
-  padding: 40px 120px;
-    min-height: 100%; /* 🔥 추가 */
+  padding: 120px;
+  min-height: 100%;
   box-sizing: border-box;
 `;
 
@@ -19,74 +19,86 @@ const Max = styled.div`
   display: flex;
   width: 100%;
   max-width: 1440px;
-  gap: 40px;
+  gap: 145px;
   align-items: flex-start;
 `;
 
 // 왼쪽 카테고리 영역
 const CategoryWrapper = styled.div`
-  width: 120px;
+  width: 180px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  height: 345px;
+  box-shadow: 0 1px 6px 5px #2222224f;
 `;
 
 const CategoryButton = styled.button`
-  padding: 10px 20px;
+  padding: 24px 25px;
   text-align: left;
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 500;
-  background-color: ${(props) => (props.active ? "#333" : "transparent")};
-  color: ${(props) => (props.active ? "#e4cfa1" : "#fff")};
-  border: ${(props) => (props.active ? "none" : "1px solid transparent")};
+  background-color: ${(props) => (props.$active ? "#1E1E1E" : "transparent")};
+  color: ${(props) => (props.$active ? "#e4cfa1" : "#E2E2E2")};
+  border: none;
+  text-decoration: none;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: all 0.3s ease;
 
   &:hover {
-    background-color: #2a2a2a;
+    background-color: ${(props) => (props.$active ? "#1E1E1E" : "transparent")};
+    color: ${(props) => (props.$active ? "#e4cfa1" : "#E2E2E2")};
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-color: ${(props) =>
+      props.$active ? "#e4cfa1" : "#E2E2E2"};
   }
 `;
 
-// LP 카드 영역 (스크롤 지원)
+// LP 카드 영역
 const GridWrapper = styled.div`
   flex: 1;
-  overflow-y: auto;
-  max-height: calc(100vh - 200px); // 헤더+푸터 공간 제외
-  padding-right: 4px;
+  overflow: visible;
+  max-height: none;
+  padding-right: 0;
 `;
 
-// LP 카드 목록
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, 235px);
   gap: 36px;
 `;
 
 const Card = styled.div`
-  background-color: #1f1f1f;
-  padding: 16px;
+  padding: 22px 16px 0;
   border-radius: 8px;
   text-align: center;
+  width: 239px;
+  height: 307px;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #373737;
+  }
 `;
 
 const Thumbnail = styled.img`
-  width: 100%;
-  height: 240px;
+  width: 220px;
+  height: 170px;
   object-fit: cover;
   border-radius: 6px;
-  margin-bottom: 12px;
+  margin-bottom: 5px;
 `;
 
 const Title = styled.h2`
   font-size: 14px;
   color: #ffffff;
-  margin-bottom: 6px;
+  margin: 0 0 23px 0;
 `;
 
 const Artist = styled.p`
   font-size: 13px;
   color: #b0b0b0;
-  margin-bottom: 14px;
+  margin: 0 0 6px 0;
 `;
 
 const ButtonGroup = styled.div`
@@ -95,23 +107,24 @@ const ButtonGroup = styled.div`
   gap: 10px;
 `;
 
-const ActionButton = styled.button`
-  font-size: 12px;
-  padding: 6px 12px;
-  border: 1px solid #e4cfa1;
-  color: #e4cfa1;
-  background-color: transparent;
-  border-radius: 3px;
-  cursor: pointer;
-  transition: all 0.3s;
-
-  &:hover {
-    background-color: #e4cfa1;
-    color: #121212;
-  }
+const Button = styled.button`
+  width: 60px;
+  height: 35px;
+  font-size: 13px;
+  padding: 0;
 `;
 
-// 카테고리 옵션들
+const PrimaryButton = styled(Button)`
+  width: 75px;
+`;
+
+const Baseline = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
+  padding: 0 12px;
+`;
+
 const categories = ["전체", "인디", "재즈", "클래식", "시티팝"];
 
 const ListPage = () => {
@@ -120,9 +133,10 @@ const ListPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/lps")
+    axios
+      .get("http://localhost:5000/api/lps")
       .then((res) => {
-        const filtered = res.data.filter(lp => lp.showInList);
+        const filtered = res.data.filter((lp) => lp.showInList);
         setLpList(filtered);
       })
       .catch((err) => {
@@ -138,12 +152,11 @@ const ListPage = () => {
   return (
     <Wrapper>
       <Max>
-        {/* 왼쪽 카테고리 */}
         <CategoryWrapper>
           {categories.map((cat) => (
             <CategoryButton
               key={cat}
-              active={cat === activeCategory}
+              $active={cat === activeCategory}
               onClick={() => setActiveCategory(cat)}
             >
               {cat}
@@ -151,29 +164,40 @@ const ListPage = () => {
           ))}
         </CategoryWrapper>
 
-        {/* LP 카드 목록 */}
         <GridWrapper>
           <Grid>
-            {filteredList.map((lp) => (
-              <Card key={lp._id}>
-                <Thumbnail src={lp.thumbnail} alt={lp.title} />
-                <Title>{lp.title}</Title>
-                <Artist>{lp.artist}</Artist>
+            {filteredList.length > 0 &&
+              Array(8)
+                .fill(null)
+                .map((_, i) => {
+                  const lp = filteredList[i % filteredList.length];
+                  return (
+                    <Card key={`${lp._id}-${i}`}>
+                      <Thumbnail src={lp.thumbnail} alt={lp.title} />
+                      <Baseline>
+                        <Artist>{lp.artist}</Artist>
+                        <Title>{lp.title}</Title>
 
-                <ButtonGroup>
-                  {lp.showAudioButton && (
-                    <ActionButton onClick={() => navigate(`/lp/${lp.id}?type=audio`)}>
-                      음원
-                    </ActionButton>
-                  )}
-                  {lp.showPurchaseButton && (
-                    <ActionButton onClick={() => navigate(`/lp/${lp.id}?type=purchase`)}>
-                      구매
-                    </ActionButton>
-                  )}
-                </ButtonGroup>
-              </Card>
-            ))}
+                        <ButtonGroup>
+                          <Button
+                            className="btn-secondary"
+                            onClick={() => navigate(`/lp/${lp._id}?type=audio`)}
+                          >
+                            음원
+                          </Button>
+                          <PrimaryButton
+                            className="btn-primary"
+                            onClick={() =>
+                              navigate(`/lp/${lp._id}?type=purchase`)
+                            }
+                          >
+                            LP 구매
+                          </PrimaryButton>
+                        </ButtonGroup>
+                      </Baseline>
+                    </Card>
+                  );
+                })}
           </Grid>
         </GridWrapper>
       </Max>

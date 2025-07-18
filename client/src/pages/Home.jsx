@@ -3,18 +3,14 @@ import RecommendSection from '../components/RecommendSection';
 import HeroSection from '../components/HeroSection';
 import ChartSection from '../components/ChartSection';
 
-// 전체 스크롤 영역
+// 일반 스크롤 컨테이너
 const ScrollContainer = styled.div`
-  height: 100vh;
-  overflow-y: scroll;
-  scroll-snap-type: y mandatory;
-  scroll-behavior: smooth;
+  overflow-y: auto;
+  height: auto;
 `;
 
-// 각 섹션
 const Section = styled.section`
-  height: 100vh;
-  scroll-snap-align: start;
+  min-height: 100vh;
 `;
 
 const Home = () => {

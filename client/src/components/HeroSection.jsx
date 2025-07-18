@@ -43,7 +43,7 @@ const Section = styled.section`
 const Container = styled.div`
   width: 100%;
   max-width: 1440px;
-  height: 750px;
+  height: 600px;
   display: flex;
   gap: 5px;
   margin-bottom: 65px;
@@ -138,7 +138,7 @@ const HeroSection = () => {
     <Section>
       <Container>
         {/* 왼쪽 큰 배너 */}
-        <LargeBanner onClick={() => navigate(`/list?genre=${banners[0].genre}`)}>
+        <LargeBanner onClick={() => navigate(`lp/:id?genre=${banners[0].genre}`)}>
           <img src={banners[0].image} alt={banners[0].label} />
           <div className="overlay">
             <h2>{banners[0].label}</h2>
@@ -150,7 +150,7 @@ const HeroSection = () => {
         {/* 오른쪽 작은 배너들 */}
         <SmallBanners>
           {banners.slice(1).map((item, i) => (
-            <SmallBanner key={i} onClick={() => navigate(`/list?genre=${item.genre}`)}>
+            <SmallBanner key={i} onClick={() => navigate(`lp/:id?genre=${item.genre}`)}>
               <img src={item.image} alt={item.label} />
               <div className="overlay">
                 <div>

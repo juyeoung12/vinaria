@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import Slider from "react-slick";
 import styled, { createGlobalStyle } from "styled-components";
-import { useNavigate } from "react-router-dom"; // ✅ 추가
+import { useNavigate } from "react-router-dom";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
@@ -47,7 +47,7 @@ const Outer = styled.div`
 const Section = styled.section`
   width: 100%;
   max-width: 1440px;
-  padding: 40px 0;
+  padding: 40px 0 0 0;
   background-color: #222;
   display: flex;
   justify-content: center;
@@ -62,14 +62,16 @@ const Container = styled.div`
   align-items: center;
   overflow: visible;
   height: 100%;
-  padding: 80px 0 0 0;
+  padding: 0 0 30px 0;
   box-sizing: border-box;
+  margin-top: 65px;
 `;
 
 const Title = styled.h2`
-  font-size: 45px;
+  font-size: 40px;
   font-weight: bold;
   margin-bottom: 4px;
+
   span {
     color: #e4cfa1;
     margin-left: 6px;
@@ -78,7 +80,7 @@ const Title = styled.h2`
 `;
 
 const Subtitle = styled.p`
-  font-size: 20px;
+  font-size: 18px;
   color: #aaa;
   margin-bottom: 40px;
 `;
@@ -86,7 +88,7 @@ const Subtitle = styled.p`
 const TabWrapper = styled.div`
   display: flex;
   gap: 30px;
-  margin: 40px 0;
+  margin: 25px 0;
   position: relative;
   align-items: center;
 `;
@@ -118,10 +120,10 @@ const Card = styled.div`
   width: 280px;
   position: relative;
   background: #222222;
-  height: ${(props) => (props.tab === "music" ? "250px" : "290px")};
+  height: ${(props) => (props.$tab === "music" ? "250px" : "290px")};
   transition: background-color 0.3s;
   text-align: left;
-  cursor: pointer; /* ✅ 클릭 가능한 느낌 추가 */
+  cursor: pointer;
 
   &:hover {
     background: #303030;
@@ -219,21 +221,18 @@ const ChartSection = () => {
   const [tab, setTab] = useState("music");
   const [lpData, setLpData] = useState([]);
   const sliderRef = useRef(null);
-  const navigate = useNavigate(); // ✅ navigate 훅 사용
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios.get("http://localhost:5000/api/lps")
-      .then((res) => {
-        setLpData(res.data);
-      })
+      .then((res) => setLpData(res.data))
       .catch((err) => console.error("데이터 로딩 실패", err));
   }, []);
 
   const sorted = [...lpData]
     .filter((item) => item.showInChart === true)
     .sort((a, b) => {
-      if (tab === "music") return a.rank_audio - b.rank_audio;
-      return a.rank_sale - b.rank_sale;
+      return tab === "music" ? a.rank_audio - b.rank_audio : a.rank_sale - b.rank_sale;
     })
     .slice(0, 10);
 
@@ -288,7 +287,7 @@ const ChartSection = () => {
               <Slider ref={sliderRef} {...sliderSettings}>
                 {filled.map((item, index) => (
                   <CardWrapper key={`${item._id}-${index}`}>
-                    <Card tab={tab} onClick={() => navigate(`/lp/${item._id}`)}>
+                    <Card $tab={tab} onClick={() => navigate(`/lp/${item._id}`)}>
                       <div className="image-container">
                         <img src={item.thumbnail} alt={item.title} />
                         <img src="/icons/play.svg" alt="play" className="play-icon" />
