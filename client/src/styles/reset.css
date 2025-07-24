@@ -1,0 +1,38 @@
+/* src/styles/reset.css */
+
+/* 박스 크기 계산 초기화 */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* 기본 html, body 설정 */
+html, body {
+  height: 100%;
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  line-height: 1.5;
+  background-color: #2D2D2D;
+  color: #fff; 
+}
+
+/* 이미지 크기 초기화 */
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* 폼 요소 초기화 */
+input, button, textarea, select {
+  font: inherit;
+  background: none;
+  border: none;
+  outline: none;
+}
+
+/* 리스트 스타일 제거 */
+ul, ol {
+  list-style: none;
+}
